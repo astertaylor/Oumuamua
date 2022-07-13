@@ -6,7 +6,7 @@ Created on Wed May 25 19:12:33 2022
 """
 
 import numpy as np
-import AsteroidModel as AM
+from SAMUS import *
 from mpi4py import MPI
 import time
 
@@ -38,7 +38,7 @@ for i,name in enumerate(labels):
     name=name+"_a"+str(size)
     STOP=False   
     while not STOP:
-        file=AM.AsteroidModel(name,a,b,c,mu,omegavec,rho,n=n)
+        file=SAMUS(name,a,b,c,mu,omegavec,rho,n=n)
         STOP=file.run_model(10,savesteps=True)
         mu*=10
         break

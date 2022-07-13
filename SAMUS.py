@@ -12,7 +12,7 @@ from scipy.interpolate import UnivariateSpline
 from mpi4py import MPI
 import quaternion
 
-class AsteroidModel:
+class SAMUS:
     '''
     Creates a model of an ellipsoidal asteroid and simulates its evolution 
     over the given trajectory.
@@ -262,7 +262,7 @@ class AsteroidModel:
         self.logfile.write("%s: Beginning Initialization... \n"% #writes initial time to log file
                            (self.convert_time(time.time()-self.start_time))) 
         
-        self.mesh=Mesh('3ball%s.xml'%(n)) #read in mesh, with n refinements
+        self.mesh=Mesh('Meshes/3ball%s.xml'%(n)) #read in mesh, with n refinements
         
         #rescales the mesh to the input ellipsoids
         self.mesh.coordinates()[:,0]*=a/2 
