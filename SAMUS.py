@@ -1,4 +1,3 @@
- -*- coding: utf-8 -*-
 """
 Created on Wed May 25 13:57:01 2022
 
@@ -396,7 +395,7 @@ class SAMUS:
         '''
         times,dist=self.read_data(data_name) #reads in data
         self.end_time=times[-1] #finds the ending time for cutoffs
-	self.end_time=10
+        self.end_time=10
         
         self.trajectory=UnivariateSpline(times,dist) #creates spline
     
@@ -477,27 +476,27 @@ class SAMUS:
         return(time.strftime("%H:%M:%S", time.gmtime(t)))
     
     def get_outputs(self):
-	try: self.times
+        try: self.times
         except AttributeError: self.times=[]
         try: self.outputs
         except AttributeError: self.outputs=[]
-
-	outlist=[]	
-
-	for func in self.out_funcs:
-	    fv = func()
-	    if type(fv) is list:
-		outlist.extend(fv)
-	    else:
-		outlist.append(fv)
-
-	self.outputs.append(outlist)
+        
+        outlist=[]	
+        
+        for func in self.out_funcs:
+            fv = func()
+            if type(fv) is list:
+                t.extend(fv)
+            else:
+                t.append(fv)
+        
+        self.outputs.append(outlist)
 
     def princ_axes(self):
-	princ_axis.name=["a","b","c"]
+        princ_axis.name=["a","b","c"]
 
-	coords=self.V.tabulate_dof_coordinates()[::3]
-	return(np.max(coords,axis=0))
+        coords=self.V.tabulate_dof_coordinates()[::3]
+        return(np.max(coords,axis=0))
 
     def moment_of_inertia(self):
         '''
@@ -510,7 +509,7 @@ class SAMUS:
         None.
     
         '''
-	moment_of_inertia.name="MoIs"
+        moment_of_inertia.name="MoIs"
         self.get_coords() #update the coordinates of the mesh
         
         # takes the cross product of the position and rotation vectors, giving
@@ -855,7 +854,7 @@ class SAMUS:
 
         '''
         #appends the current time/MoI to the lists
-	self.get_outputs()       
+        self.get_outputs()       
  
         #prints
         print("-------------------------")
@@ -973,7 +972,7 @@ class SAMUS:
             self.move_mesh(timejump) #move the mesh over this displacement
             
             #save the new time/MoI
-	    self.get_outputs()
+            self.get_outputs()
             
             #write updates
             print("-------------------------")
@@ -1022,10 +1021,11 @@ class SAMUS:
         assert(rtol>0)
         assert(moitol>0)
 
- 	for i,func in enumerate(out_funcs):
-	    if type(func) is str:
-	        out_funcs[i]=self.func	
-	self.out_funcs=out_funcs	
+        for i,func in enumerate(out_funcs):
+            if type(func) is str:
+                out_funcs[i]=self.func	
+        
+        f.out_funcs=out_funcs	
         
         #initializes parameters
         self.diverged=False
@@ -1056,15 +1056,15 @@ class SAMUS:
                         self.coriolis,self.forcing)
         
         #saves the times and MoIs to a csv
-	outnames=["Times"]
-	for func in out_funcs:
-	    fn=func.name
-	    if type(fn) is list:
-	        outnames.extend(fn)
- 	    else:
-		outnames.append(fn)
+        outnames=["Times"]
+        for func in out_funcs:
+            fn=func.name
+            if type(fn) is list:
+                outnames.extend(fn)
+            else:
+                outnames.append(fn)
 
-	out_data=np.insert(np.array(self.outputs),0,np.array(self.times+self.mint),axis=1)
+        out_data=np.insert(np.array(self.outputs),0,np.array(self.times+self.mint),axis=1)
         pd.DataFrame(out_data,columns=outnames).to_csv('logs/MoIs_{}_{}.csv'.format(self.name,int(np.log10(float(self.mu)))))
             
         #writes to the logfile
