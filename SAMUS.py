@@ -874,7 +874,7 @@ class SAMUS:
             
         #write to log
         self.logfile.write(
-            "{}: --- Solved Cycle {}, t={:.3e}, Completed {:.2f}%, CFL: {:.3f} --- \n"
+            "{}: --- Solved Cycle {}, t={:.3e}, Completed {:.2f}%, CFL: {:.3e} --- \n"
             .format(self.convert_time(time.time()-self.start_time),self.ind,
                     self.t,100*self.t/self.end_time,self.CFL(self.dt)))
         
@@ -973,11 +973,11 @@ class SAMUS:
             
             #write updates
             print("-------------------------")
-            print("{}: Trajectory Jump Completed, Stepped {:.3f} s, t={:.3e}, {:.2f}%"
+            print("{}: Trajectory Jump Completed, Stepped {:.3f} s, t={:.3e}, {:.3e}%"
                 .format(self.convert_time(time.time()-self.start_time),timejump,
                         self.t,100*(self.t/self.end_time)))
             print("------------------------- \n")
-            self.logfile.write("{}: --- Trajectory Jump Completed, Stepped {:.3f} s, {:.2f}%, CFL: {:.3f}---\n"
+            self.logfile.write("{}: --- Trajectory Jump Completed, Stepped {:.3f} s, {:.2f}%, CFL: {:.3e}---\n"
                                .format(self.convert_time(time.time()-self.start_time),
                                        timejump,100*(self.t/self.end_time),self.CFL(timejump)))
     
