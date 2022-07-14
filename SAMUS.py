@@ -878,6 +878,7 @@ class SAMUS:
             .format(self.convert_time(time.time()-self.start_time),self.ind,
                     self.t,100*self.t/self.end_time,self.CFL(self.dt)))
         
+        self.update_dt()
         self.adjust_u() #remove the mean velocity
         self.u_p_.assign(self.up) #assign the current solution to the prior solution
         self.ind+=1 #updates the run index
@@ -957,9 +958,9 @@ class SAMUS:
             #while the distance has changed by less than rtol percent
             while np.abs(self.trajectory(self.t)/dist-1)<self.rtol:
                 self.t+=self.nsrot*self.dt #step over a full rotation each time
-                if self.CFL(self.t-inittime)>=1: #check CFL criterion
+                if self.CFL(self.t-inittime)>=self.Cmax: #check CFL criterion
                     #if CFL>1, reverse the time until CFL<1
-                    while self.CFL(self.t-inittime)>=1:
+                    while self.CFL(self.t-inittime)>=self.Cmax:
                         self.t-=self.dt
                     break
             
@@ -981,7 +982,7 @@ class SAMUS:
                                .format(self.convert_time(time.time()-self.start_time),
                                        timejump,100*(self.t/self.end_time),self.CFL(timejump)))
     
-    def run_model(self,nsrot=10,rtol=0.01,period=7.937,savesteps=False,out_funcs=['moment_of_inertia','princ_axes']):
+    def run_model(self,nsrot=10,rtol=0.01,period=7.937,Cmax=1,savesteps=False,out_funcs=['moment_of_inertia','princ_axes']):
         '''
         Helper function which runs the simulation, to avoid cluttering. 
 
@@ -1025,6 +1026,7 @@ class SAMUS:
         self.period=period*3600 #converting from hour to seconds
         self.nsrot=nsrot
         self.dt=self.period/nsrot #in seconds
+        self.Cmax=Cmax
         
         #computes the magnitude of the rotation vector
         mag=2*np.pi/(self.period) 
@@ -1124,3 +1126,9 @@ class SAMUS:
         #sets solution functions to 0
         self.up.assign(Constant((0,0,0,0)))
         self.u_p_.assign(Constant((0,0,0,0)))
+
+    def update_dt(self):
+        if self.CFL(self.dt)>=self.Cmax:
+           ndt=self.dt*self.Cmax/self.CFL(self.dt)
+           self.dt=ndt
+     
