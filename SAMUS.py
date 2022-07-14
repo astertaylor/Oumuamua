@@ -376,7 +376,7 @@ class SAMUS:
         
         self.logfile.write("%s: Initializations Complete \n"% #writes to log
                            (self.convert_time(time.time()-self.start_time)))
-    
+
     def set_spline(self,data_name='horizons_results.txt'):
         '''
         Computes a spline estimation for the solar distance versus time, for 
@@ -395,7 +395,6 @@ class SAMUS:
         '''
         times,dist=self.read_data(data_name) #reads in data
         self.end_time=times[-1] #finds the ending time for cutoffs
-        self.end_time=10
         
         self.trajectory=UnivariateSpline(times,dist) #creates spline
     
@@ -481,22 +480,21 @@ class SAMUS:
         try: self.outputs
         except AttributeError: self.outputs=[]
         
+        self.times.append(self.t)
+
         outlist=[]	
-        
         for func in self.out_funcs:
-            fv = func()
+            fv = func()[0]
             if type(fv) is list:
-                t.extend(fv)
+                outlist.extend(fv)
             else:
-                t.append(fv)
+                outlist.append(fv)
         
         self.outputs.append(outlist)
 
     def princ_axes(self):
-        princ_axis.name=["a","b","c"]
-
         coords=self.V.tabulate_dof_coordinates()[::3]
-        return(np.max(coords,axis=0))
+        return(list(np.max(coords,axis=0)),["a","b","c"])
 
     def moment_of_inertia(self):
         '''
@@ -509,7 +507,6 @@ class SAMUS:
         None.
     
         '''
-        moment_of_inertia.name="MoIs"
         self.get_coords() #update the coordinates of the mesh
         
         # takes the cross product of the position and rotation vectors, giving
@@ -529,7 +526,7 @@ class SAMUS:
         d2=project(abs(A2/ommag),self.Q)
         
         #computes and returns the integral of d^2*rho over the body
-        return(assemble(self.rho*d2*dx))
+        return(assemble(self.rho*d2*dx),"MoIs")
     
 
     def CFL(self,dt):
@@ -984,7 +981,7 @@ class SAMUS:
                                .format(self.convert_time(time.time()-self.start_time),
                                        timejump,100*(self.t/self.end_time),self.CFL(timejump)))
     
-    def run_model(self,nsrot=10,rtol=0.01,period=7.937,moitol=0.01,savesteps=False,out_funcs=['moment_of_inertia','princ_axes']):
+    def run_model(self,nsrot=10,rtol=0.01,period=7.937,savesteps=False,out_funcs=['moment_of_inertia','princ_axes']):
         '''
         Helper function which runs the simulation, to avoid cluttering. 
 
@@ -998,11 +995,6 @@ class SAMUS:
         period : float, optional
             The rotational period of the body, in hours. The default is 7.937 
             hours, which is for 'Oumuamua.
-        moitol : float, optional
-            The maximum change in MoI for the running of simulations to stop.
-            This is dealt with in wrapper functions, here it simply returns 
-            whether or not the moment of inertia changed by more or less than 
-            this. The default is 0.01.
         savesteps : boolean, optional
             Whether or not to save the functions and mesh at each computational
             step. This can quickly overwhelm storage if many runs are used. 
@@ -1019,14 +1011,13 @@ class SAMUS:
         '''
         
         assert(rtol>0)
-        assert(moitol>0)
 
         for i,func in enumerate(out_funcs):
             if type(func) is str:
-                out_funcs[i]=self.func	
+                out_funcs[i]=getattr(self,func)	
         
-        f.out_funcs=out_funcs	
-        
+        self.out_funcs=out_funcs	
+
         #initializes parameters
         self.diverged=False
         self.savesteps=savesteps
@@ -1058,27 +1049,24 @@ class SAMUS:
         #saves the times and MoIs to a csv
         outnames=["Times"]
         for func in out_funcs:
-            fn=func.name
+            fn=func()[1]
             if type(fn) is list:
                 outnames.extend(fn)
             else:
                 outnames.append(fn)
 
         out_data=np.insert(np.array(self.outputs),0,np.array(self.times+self.mint),axis=1)
-        pd.DataFrame(out_data,columns=outnames).to_csv('logs/MoIs_{}_{}.csv'.format(self.name,int(np.log10(float(self.mu)))))
+        outFrame=pd.DataFrame(out_data,columns=outnames)
+        outFrame.to_csv('logs/Outputs_{}_{}.csv'.format(self.name,int(np.log10(float(self.mu)))))
             
         #writes to the logfile
-        self.logfile.write("{}: --- Finished, Run Time: {:.3e}, MoI Ratio: {:.4f} --- \n"
+        self.logfile.write("{}: --- Finished, Run Time: {:.3e} --- \n"
                            .format(self.convert_time(time.time()-self.start_time),
-                                   (time.time()-self.start_time),self.outputs[-1]/self.outputs[0]))
+                                   (time.time()-self.start_time)))
         
         self.logfile.close() #closes the log file
         
-        #checks for the MoI tolerance condition, returns True or False
-        if (not self.diverged)&(self.outputs[-1,0]/self.outputs[0,0]<=(1+moitol)): 
-            moi_check=True
-        else: moi_check=False
-        return(moi_check)
+        return(outFrame)
     
     def reset_model(self,name=None,a=None,b=None,c=None,mu=None,omegavec=None,
                   rho=None,szscale=None,n=0):

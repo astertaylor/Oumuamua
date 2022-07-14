@@ -29,6 +29,8 @@ labels=["pancake1","pancake2","pancake3","pancake4"]
 dims=[(1,scaleb,scalec),(scalec,1,scaleb),(1,scaleb,scalec),(1,scalec,scaleb)]
 axes=[[0,0,1],[0,0,1],[0,1,0],[0,1,0]]
 
+def ones():
+    return(1,"ones")
 
 for i,name in enumerate(labels):
     mu=10**5
@@ -38,8 +40,12 @@ for i,name in enumerate(labels):
     STOP=False   
     while not STOP:
         file=SAMUS("test",a,b,c,mu,omegavec,rho,n=n)
-        STOP=file.run_model(10)
+        frame=file.run_model(10,out_funcs=['moment_of_inertia',ones])
         mu*=10
+
+        MoIs=frame['MoIs'].to_numpy()
+        STOP=(MoIs[-1]/MoIs[0]<1.01)
+        print(MoIs[-1]/MoIs[0])
         break
     break
 
