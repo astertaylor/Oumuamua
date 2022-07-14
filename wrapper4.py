@@ -6,7 +6,7 @@ Created on Wed May 25 19:12:33 2022
 """
 
 import numpy as np
-import AsteroidModel as AM
+from SAMUS import *
 from mpi4py import MPI
 import time
 
@@ -23,8 +23,6 @@ period=7.937 # in hours
 
 n=0 #number of mesh refinements
 
-mu=10**0
-
 scaleb=111/115;scalec=19/115
 
 labels=["pancake1","pancake2","pancake3","pancake4"]
@@ -33,12 +31,13 @@ axes=[[0,0,1],[0,0,1],[0,1,0],[0,1,0]]
 
 
 for i,name in enumerate(labels):
+    mu=10**5
     a,b,c=[size*x for x in dims[i]]
     omegavec=axes[i]
     name=name+"_a"+str(size)
     STOP=False   
     while not STOP:
-        file=AM.AsteroidModel(name,a,b,c,mu,omegavec,rho,n=n)
+        file=SAMUS(name,a,b,c,mu,omegavec,rho,n=n)
         STOP=file.run_model(10)
         mu*=10
 

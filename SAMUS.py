@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+ -*- coding: utf-8 -*-
 """
 Created on Wed May 25 13:57:01 2022
 
@@ -37,7 +37,7 @@ class SAMUS:
         A list of length 3, containing the values of the rotation axis. The 
         rotation axis is the unit vector parallel to omegavec.
     mu : float, [dyne cm^-2 s]
-        The viscosity of the body in this model. 
+        The dynamic viscosity of the body in this model. 
     rho : float, [g cm^-3]
         The density of the body in this model.
     omega : dolfin.function.function.Function, [s^-1]
@@ -396,6 +396,7 @@ class SAMUS:
         '''
         times,dist=self.read_data(data_name) #reads in data
         self.end_time=times[-1] #finds the ending time for cutoffs
+	self.end_time=10
         
         self.trajectory=UnivariateSpline(times,dist) #creates spline
     
@@ -475,6 +476,29 @@ class SAMUS:
         '''
         return(time.strftime("%H:%M:%S", time.gmtime(t)))
     
+    def get_outputs(self):
+	try: self.times
+        except AttributeError: self.times=[]
+        try: self.outputs
+        except AttributeError: self.outputs=[]
+
+	outlist=[]	
+
+	for func in self.out_funcs:
+	    fv = func()
+	    if type(fv) is list:
+		outlist.extend(fv)
+	    else:
+		outlist.append(fv)
+
+	self.outputs.append(outlist)
+
+    def princ_axes(self):
+	princ_axis.name=["a","b","c"]
+
+	coords=self.V.tabulate_dof_coordinates()[::3]
+	return(np.max(coords,axis=0))
+
     def moment_of_inertia(self):
         '''
         Computes the moment of inertia of the body, which is the integral of 
@@ -486,6 +510,7 @@ class SAMUS:
         None.
     
         '''
+	moment_of_inertia.name="MoIs"
         self.get_coords() #update the coordinates of the mesh
         
         # takes the cross product of the position and rotation vectors, giving
@@ -507,6 +532,7 @@ class SAMUS:
         #computes and returns the integral of d^2*rho over the body
         return(assemble(self.rho*d2*dx))
     
+
     def CFL(self,dt):
         '''
         Computes the CFL criterion, using the velocity self.u and over the 
@@ -828,16 +854,9 @@ class SAMUS:
         None.
 
         '''
-        #initialize the times and MoIs list
-        try: self.times
-        except AttributeError: self.times=[]
-        try: self.MoIs
-        except AttributeError: self.MoIs=[]
-        
         #appends the current time/MoI to the lists
-        self.times.append(self.t)
-        self.MoIs.append(self.moment_of_inertia())
-        
+	self.get_outputs()       
+ 
         #prints
         print("-------------------------")
         print("Now Running Cycle {}, t: {:.3e}, Completed {:.2f}%, CFL: {:.3e}"
@@ -954,20 +973,19 @@ class SAMUS:
             self.move_mesh(timejump) #move the mesh over this displacement
             
             #save the new time/MoI
-            self.times.append(self.t)
-            self.MoIs.append(self.moment_of_inertia())
+	    self.get_outputs()
             
             #write updates
             print("-------------------------")
-            print("{}: trajectory Jump Completed, Stepped {:.3f} s, t={:.3e}, {:.2f}%"
+            print("{}: Trajectory Jump Completed, Stepped {:.3f} s, t={:.3e}, {:.2f}%"
                 .format(self.convert_time(time.time()-self.start_time),timejump,
                         self.t,100*(self.t/self.end_time)))
             print("------------------------- \n")
-            self.logfile.write("{}: --- trajectory Jump Completed, Stepped {:.3f} s, {:.2f}%, CFL: {:.3f}---\n"
+            self.logfile.write("{}: --- Trajectory Jump Completed, Stepped {:.3f} s, {:.2f}%, CFL: {:.3f}---\n"
                                .format(self.convert_time(time.time()-self.start_time),
                                        timejump,100*(self.t/self.end_time),self.CFL(timejump)))
     
-    def run_model(self,nsrot=10,rtol=0.01,period=7.937,moitol=0.01,savesteps=False):
+    def run_model(self,nsrot=10,rtol=0.01,period=7.937,moitol=0.01,savesteps=False,out_funcs=['moment_of_inertia','princ_axes']):
         '''
         Helper function which runs the simulation, to avoid cluttering. 
 
@@ -1003,6 +1021,11 @@ class SAMUS:
         
         assert(rtol>0)
         assert(moitol>0)
+
+ 	for i,func in enumerate(out_funcs):
+	    if type(func) is str:
+	        out_funcs[i]=self.func	
+	self.out_funcs=out_funcs	
         
         #initializes parameters
         self.diverged=False
@@ -1033,18 +1056,26 @@ class SAMUS:
                         self.coriolis,self.forcing)
         
         #saves the times and MoIs to a csv
-        pd.DataFrame(np.array([self.times+self.mint,self.MoIs]).T)\
-            .to_csv('logs/MoIs_{}_{}.csv'.format(self.name,int(np.log10(float(self.mu)))))
+	outnames=["Times"]
+	for func in out_funcs:
+	    fn=func.name
+	    if type(fn) is list:
+	        outnames.extend(fn)
+ 	    else:
+		outnames.append(fn)
+
+	out_data=np.insert(np.array(self.outputs),0,np.array(self.times+self.mint),axis=1)
+        pd.DataFrame(out_data,columns=outnames).to_csv('logs/MoIs_{}_{}.csv'.format(self.name,int(np.log10(float(self.mu)))))
             
         #writes to the logfile
         self.logfile.write("{}: --- Finished, Run Time: {:.3e}, MoI Ratio: {:.4f} --- \n"
                            .format(self.convert_time(time.time()-self.start_time),
-                                   (time.time()-self.start_time),self.MoIs[-1]/self.MoIs[0]))
+                                   (time.time()-self.start_time),self.outputs[-1]/self.outputs[0]))
         
         self.logfile.close() #closes the log file
         
         #checks for the MoI tolerance condition, returns True or False
-        if (not self.diverged)&(self.MoIs[-1]/self.MoIs[0]<=(1+moitol)): 
+        if (not self.diverged)&(self.outputs[-1,0]/self.outputs[0,0]<=(1+moitol)): 
             moi_check=True
         else: moi_check=False
         return(moi_check)

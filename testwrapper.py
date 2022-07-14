@@ -23,23 +23,22 @@ period=7.937 # in hours
 
 n=0 #number of mesh refinements
 
-mu=10**0
-
 scaleb=111/115;scalec=19/115
 
-labels=["test","pancake2","pancake3","pancake4"]
+labels=["pancake1","pancake2","pancake3","pancake4"]
 dims=[(1,scaleb,scalec),(scalec,1,scaleb),(1,scaleb,scalec),(1,scalec,scaleb)]
 axes=[[0,0,1],[0,0,1],[0,1,0],[0,1,0]]
 
 
 for i,name in enumerate(labels):
+    mu=10**5
     a,b,c=[size*x for x in dims[i]]
     omegavec=axes[i]
     name=name+"_a"+str(size)
     STOP=False   
     while not STOP:
-        file=SAMUS(name,a,b,c,mu,omegavec,rho,n=n)
-        STOP=file.run_model(10,savesteps=True)
+        file=SAMUS("test",a,b,c,mu,omegavec,rho,n=n)
+        STOP=file.run_model(10)
         mu*=10
         break
     break

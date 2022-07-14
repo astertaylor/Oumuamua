@@ -23,8 +23,6 @@ period=7.937 # in hours
 
 n=0 #number of mesh refinements
 
-mu=10**0
-
 scaleb=111/115;scalec=19/115
 
 labels=["pancake1","pancake2","pancake3","pancake4"]
@@ -33,6 +31,7 @@ axes=[[0,0,1],[0,0,1],[0,1,0],[0,1,0]]
 
 
 for i,name in enumerate(labels):
+    mu=10**5
     a,b,c=[size*x for x in dims[i]]
     omegavec=axes[i]
     name=name+"_a"+str(size)
