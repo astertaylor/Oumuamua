@@ -830,7 +830,7 @@ class SAMUS:
         except AttributeError:
             self.M = Constant(2e33)  # solar mass in g
 
-         # get the vector of y-values
+        # get the vector of y-values
         y = xyz[:, 1]
 
         # create an all-zero force vector
@@ -1285,8 +1285,8 @@ class SAMUS:
             self.compute_trajectory_step()
 
         # save the functions at the end of the runs
-        self.save_funcs(self.u, self.p, self.ftides, self.gravity, self.centrifugal,
-                        self.coriolis, self.forcing)
+        self.save_funcs(self.u, self.p, self.ftides, self.gravity,
+                        self.centrifugal, self.coriolis, self.forcing)
 
         # write the output data to an array
         outnames = ["Times"]
