@@ -302,7 +302,6 @@ class SAMUS:
         self.mesh.coordinates()[:, 1] *= b/2
         self.mesh.coordinates()[:, 2] *= c/2
 
-
         # compute the spline for the trajectory
         self.read_trajectory()
 
@@ -776,7 +775,7 @@ class SAMUS:
         """
         assert(pts.shape[1] == 3)
 
-         # get the rotation axis
+        # get the rotation axis
         rot = (self.omega.vector())[:3]
 
         # normalize the rotation axis
@@ -904,7 +903,7 @@ class SAMUS:
         # note the gravscale
         gravg, gravs = self.gravgs.split()
 
-        #assign the result to the gravity function
+        # assign the result to the gravity function
         self.gravity.assign(project(gravg/self.gravscale, self.V))
 
     def compute_centrifugal(self):
@@ -1085,7 +1084,7 @@ class SAMUS:
                 self.convert_time(time.time()-self.start_time), self.ind,
                 self.t, 100*self.t/self.end_time, self.CFL(self.dt)))
 
-        #update the timestep, for if CFL is too large
+        # update the timestep, for if CFL is too large
         self.update_dt()
 
         # remove the mean velocity
@@ -1142,7 +1141,7 @@ class SAMUS:
             # move the mesh
             self.move_mesh(self.dt)
 
-            #update the time
+            # update the time
             self.t += self.dt
 
         if not self.diverged:
@@ -1298,14 +1297,14 @@ class SAMUS:
             else:
                 outnames.append(fn)
 
-        #create array for output
+        # create array for output
         out_data = np.insert(np.array(self.outputs), 0,
                              np.array(self.times+self.mint), axis=1)
 
-        #write output data to dataframe
+        # write output data to dataframe
         outFrame = pd.DataFrame(out_data, columns=outnames)
 
-        #write output dataframe to csv
+        # write output dataframe to csv
         outFrame.to_csv(
             'logs/Outputs_{}_{}.csv'.format(self.name,
                                             int(np.log10(float(self.mu)))))
@@ -1397,7 +1396,7 @@ class SAMUS:
         # compute the spline for the trajectories
         self.get_trajectory()
 
-        #set rotation axis
+        # set rotation axis
         self.omega = interpolate(Constant(tuple(omegavec)), self.V)
 
         # set solution functions to 0
