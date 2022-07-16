@@ -1,0 +1,173 @@
+﻿*******************************************************************************
+JPL/HORIZONS              1I/'Oumuamua (A/2017 U1)         2021-Nov-13 18:40:27
+Rec #:50436973 (+COV) Soln.date: 2018-Jun-26_12:17:57    # obs: 207 (2017-2018)
+
+NOTE:
+This orbit solution includes non-gravitational perturbations as described in 
+Micheli et al. (2018): http://dx.doi.org/10.1038/s41586-018-0254-4
+
+The behavior of these accelerations outside the observed data arc from
+2017 October 14 to 2018 January 2 can only be assumed.  Predictions outside
+this time interval, especially prior to October 2017, could be much more
+uncertain than reported here.
+ 
+IAU76/J2000 helio. ecliptic osc. elements (au, days, deg., period=Julian yrs):
+ 
+  EPOCH=  2458080.5 ! 2017-Nov-23.00 (TDB)         Residual RMS= .063527
+   EC= 1.201133796102373   QR= .2559115812959116   TP= 2458006.0073213754
+   OM= 24.59690955523242   W=  241.8105360304898   IN= 122.7417062847286
+   A= -1.27234500742808    MA= 51.15761979369358   ADIST= 9.999999E99
+   PER= 9.999999E99        N= .68674693            ANGMOM= .012910695
+   DAN= 1.30212            DDN= .35938             L= 159.3364847
+   B= -47.8467702          MOID= .0958212          TP= 2017-Sep-09.5073213754
+ 
+Asteroid physical parameters (km, seconds, rotational period in hours):
+   GM= n.a.                RAD= n.a.               ROTPER= 7.937
+   H= 22.08                G= .150                 B-V= n.a.
+                           ALBEDO= n.a.            STYP= n.a.
+ 
+Asteroid non-gravitational force model (AMRAT= m^2/kg;A1,A2,A3=au/d^2;R0=au):
+   AMRAT=  0.
+   A1= 2.790193367004E-7   A2= 1.441264152527E-8   A3= 1.573922634125E-8
+ Non-standard or simulated/proxy model:
+   ALN=  .04083733261  NK=  2.6      NM=  2.       NN=  3.       R0=  5.
+ 
+ASTEROID comments: 
+1: soln ref.= JPL#16
+2: source=ORB; Sol. 7c, Micheli et al. 2018
+*******************************************************************************
+
+
+*******************************************************************************
+Ephemeris / WWW_USER Sat Nov 13 18:40:27 2021 Pasadena, USA      / Horizons    
+*******************************************************************************
+Target body name: 1I/'Oumuamua (A/2017 U1)        {source: JPL#16}
+Center body name: Sun (10)                        {source: DE441}
+Center-site name: BODYCENTRIC
+*******************************************************************************
+Start time      : A.D. 2017-Jan-01 00:00:00.0000 UT      
+Stop  time      : A.D. 2018-Jun-01 00:00:00.0000 UT      
+Step-size       : 720 minutes
+*******************************************************************************
+Target pole/equ : No model available
+Target radii    : (unavailable)                                                
+Center geodetic : 0.00000000,0.00000000,0.0000000 {E-lon(deg),Lat(deg),Alt(km)}
+Center cylindric: 0.00000000,0.00000000,0.0000000 {E-lon(deg),Dxy(km),Dz(km)}
+Center pole/equ : IAU_SUN                         {East-longitude positive}
+Center radii    : 696000.0 x 696000.0 x 696000.0 k{Equator, meridian, pole}    
+Target primary  : Sun
+Vis. interferer : None
+Rel. light bend : Sun                             {source: DE441}
+Rel. lght bnd GM: 1.3271E+11 km^3/s^2                                          
+Small-body perts: Yes                             {source: SB441-N16}
+Atmos refraction: NO (AIRLESS)
+RA format       : HMS
+Time format     : JD  
+EOP file        : eop.211111.p220204                                           
+EOP coverage    : DATA-BASED 1962-JAN-20 TO 2021-NOV-11. PREDICTS-> 2022-FEB-03
+Units conversion: 1 au= 149597870.700 km, c= 299792.458 km/s, 1 day= 86400.0 s 
+Table cut-offs 1: Elevation (-90.0deg=NO ),Airmass     n.a.    , Daylight (NO )
+Table cut-offs 2: Solar elongation (  0.0,180.0=NO ),Local Hour Angle( 0.0=NO )
+Table cut-offs 3: RA/DEC angular rate (     0.0=NO )                           
+*******************************************************************************
+Initial IAU76/J2000 heliocentric ecliptic osculating elements (au, days, deg.):
+  EPOCH=  2458080.5 ! 2017-Nov-23.00 (TDB)         Residual RMS= .063527       
+   EC= 1.201133796102373   QR= .2559115812959116   TP= 2458006.0073213754      
+   OM= 24.59690955523242   W=  241.8105360304898   IN= 122.7417062847286       
+  Equivalent ICRF heliocentric cartesian coordinates (au, au/d):
+   X= 1.889136186533479E+00  Y= 5.222899434623107E-01  Z= 5.088057830311858E-01
+  VX= 2.106502285864550E-02 VY= 3.535022471254454E-04 VZ= 8.998631872968255E-03
+Asteroid physical parameters (km, seconds, rotational period in hours):        
+   GM= n.a.                RAD= n.a.               ROTPER= 7.937               
+   H= 22.08                G= .150                 B-V= n.a.                   
+                           ALBEDO= n.a.            STYP= n.a.                  
+Asteroid non-gravitational force model (AMRAT= m^2/kg;A1,A2,A3=au/d^2;R0=au):  
+   AMRAT=  0.                                                                  
+   A1= 2.790193367004E-7   A2= 1.441264152527E-8   A3= 1.573922634125E-8       
+ Non-standard or simulated/proxy model:                                        
+   ALN=  .04083733261  NK=  2.6      NM=  2.       NN=  3.       R0=  5.       
+*******************************************************************************
+Date_________JDUT       APmag   S-brt             delta      deldot
+*******************************************************************
+$$SOE
+2457877.500000000      27.071    n.a.  3.15433612900422 -34.7661095
+2457878.000000000      27.058    n.a.  3.14429235042419 -34.7873162
+2457878.500000000      27.044    n.a.  3.13424242902570 -34.8086439
+2457879.000000000      27.030    n.a.  3.12418632970772 -34.8300937
+2457879.500000000      27.016    n.a.  3.11412401705024 -34.8516666
+2457880.000000000      27.002    n.a.  3.10405545531033 -34.8733639
+2457880.500000000      26.988    n.a.  3.09398060841789 -34.8951866
+2457881.000000000      26.973    n.a.  3.08389943997173 -34.9171359
+2457881.500000000      26.959    n.a.  3.07381191323533 -34.9392129
+2457882.000000000      26.945    n.a.  3.06371799113253 -34.9614190
+2457882.500000000      26.931    n.a.  3.05361763624338 -34.9837551
+$$EOE
+*******************************************************************************
+Column meaning:
+ 
+TIME
+
+  Times PRIOR to 1962 are UT1, a mean-solar time closely related to the
+prior but now-deprecated GMT. Times AFTER 1962 are in UTC, the current
+civil or "wall-clock" time-scale. UTC is kept within 0.9 seconds of UT1
+using integer leap-seconds for 1972 and later years.
+
+  Conversion from the internal Barycentric Dynamical Time (TDB) of solar
+system dynamics to the non-uniform civil UT time-scale requested for output
+has not been determined for UTC times after the next July or January 1st.
+Therefore, the last known leap-second is used as a constant over future
+intervals.
+
+  Time tags refer to the UT time-scale conversion from TDB on Earth
+regardless of observer location within the solar system, although clock
+rates may differ due to the local gravity field and no analog to "UT"
+may be defined for that location.
+
+  Any 'b' symbol in the 1st-column denotes a B.C. date. First-column blank
+(" ") denotes an A.D. date. Calendar dates prior to 1582-Oct-15 are in the
+Julian calendar system. Later calendar dates are in the Gregorian system.
+
+  NOTE: "n.a." in output means quantity "not available" at the print-time.
+ 
+ 'APmag   S-brt' =
+   The asteroids' approximate apparent airless visual magnitude and surface
+brightness using the standard IAU H-G system magnitude model:
+
+   APmag = H + 5*log10(delta) + 5*log10(r) - 2.5*log10((1-G)*phi_1 + G*phi_2)
+
+   For solar phase angles >90 deg, the error could exceed 1 magnitude. For
+phase angles >120 degrees, output values are rounded to the nearest integer to
+indicate error could be large and unknown. For Earth-based observers, the
+estimated dimming due to atmospheric absorption (extinction) is available as
+a separate, requestable quantity.
+
+   Surface brightness is the average airless visual magnitude of a
+square-arcsecond of the illuminated portion of the apparent disk. It is
+computed only if the target radius is known.
+
+   Units: MAGNITUDES & MAGNITUDES PER SQUARE ARCSECOND
+ 
+ 'delta      deldot' =
+   Apparent range ("delta", light-time aberrated) and range-rate ("delta-dot")
+of the target center relative to the observer. A positive "deldot" means the
+target center is moving away from the observer, negative indicates movement
+toward the observer.  Units: AU and KM/S
+
+Computations by ...
+
+    Solar System Dynamics Group, Horizons On-Line Ephemeris System
+    4800 Oak Grove Drive, Jet Propulsion Laboratory
+    Pasadena, CA  91109   USA
+
+    General site: https://ssd.jpl.nasa.gov/
+    Mailing list: https://ssd.jpl.nasa.gov/email_list.html
+    System news : https://ssd.jpl.nasa.gov/horizons/news.html
+    User Guide  : https://ssd.jpl.nasa.gov/horizons/manual.html
+    Connect     : browser        https://ssd.jpl.nasa.gov/horizons/app.html#/x
+                  API            https://ssd-api.jpl.nasa.gov/doc/horizons.html
+                  command-line   telnet ssd.jpl.nasa.gov 6775
+                  e-mail/batch   https://ssd.jpl.nasa.gov/ftp/ssd/hrzn_batch.txt
+                  scripts        https://ssd.jpl.nasa.gov/ftp/ssd/SCRIPTS
+    Author      : Jon.D.Giorgini@jpl.nasa.gov
+
+*******************************************************************************

@@ -295,15 +295,12 @@ class SAMUS:
                            (self.convert_time(time.time()-self.start_time)))
 
         # read in mesh, with n refinements
-        self.mesh = Mesh('Meshes/3ball%s.xml' % (n))
+        self.mesh = Mesh('meshes/3ball%s.xml' % (n))
 
         # rescale the mesh to the input ellipsoids
         self.mesh.coordinates()[:, 0] *= a/2
         self.mesh.coordinates()[:, 1] *= b/2
         self.mesh.coordinates()[:, 2] *= c/2
-
-        # compute the spline for the trajectory
-        self.read_trajectory()
 
         # set output file
         self.outfile = File(
@@ -421,13 +418,14 @@ class SAMUS:
         # set up the gravitational solver
         gravproblem = NonlinearVariationalProblem(gravF, self.gravgs, J=gravJ)
         self.gravsolver = NonlinearVariationalSolver(gravproblem)
-        self.gravsolver.parameters['newton_solver']['relaxation_parameter'] = 1
+        self.gravsolver.parameters['newton_solver'
+                                   ]['relaxation_parameter'] = 1.
 
         # write to log
         self.logfile.write("%s: Initializations Complete \n" %
                            (self.convert_time(time.time()-self.start_time)))
 
-    def read_trajectory(self, data_name='horizons_results.txt', cutoff=4.7e13):
+    def read_trajectory(self, data_name, cutoff=4.7e13):
         """
         Read and returns New Horizons data for time and solar distance.
 
@@ -436,9 +434,8 @@ class SAMUS:
 
         Parameters
         ----------
-        data_name : str, optional
-            The name of the file containing the data. The default is
-            'horizons_results.txt'.
+        data_name : str
+            The name of the file containing the data.
         cutoff : float, optional
             The maximum heliocentric distance we want to consider. Any distance
             beyond this will be cut out of the data. The default is chosen such
@@ -542,6 +539,48 @@ class SAMUS:
         for func in args:
             # save all of the functions input
             self.outfile.write(func, self.t)
+
+    def add_method(self,func):
+        """
+        Add functions to the class.
+
+        Can have any argument set, including 'self'. If 'self' is included in
+        the function definition, the function can access class variables. Keeps
+        the docstring of the function intact.
+
+        Parameters
+        ----------
+        func : function
+            A function to add into the class. Is able to take 'self' as an
+            input, can also take other values. This is used to allow modular
+            single-step outputs.
+
+        Returns
+        -------
+        None.
+
+        """
+        # define a wrapper to add functions which don't have 'self'
+        def wrapper(self, *args, **kwargs):
+            return func(*args, **kwargs)
+
+        # if function takes no parameters
+        if func.__code__.co_argcount==0:
+
+            # add with 'self'
+            setattr(SAMUS,func.__name__,wrapper)
+
+        # if function does not take 'self'
+        elif not "self" in func.__code__.co_varnames[0]:
+
+            # add with 'self'
+            setattr(SAMUS,func.__name__,wrapper)
+
+        # if function takes 'self'
+        elif "self" in func.__code__.co_varnames[0]:
+
+            # add unmodified
+            setattr(SAMUS,func.__name__,func)
 
     def get_outputs(self):
         """
@@ -1215,7 +1254,7 @@ class SAMUS:
                                self.CFL(timejump)))
 
     def run_model(self, nsrot=10, rtol=0.01, period=7.937, Cmax=1.,
-                  savesteps=False,
+                  savesteps=False, data_name='horizons_results.txt',
                   out_funcs=['moment_of_inertia', 'princ_axes']):
         """
         Run the simulation, to avoid cluttering. Helper function.
@@ -1253,10 +1292,19 @@ class SAMUS:
         """
         assert(rtol > 0)
 
+        # go through functions for outputs
         for i, func in enumerate(out_funcs):
+
+            # if a string, assume already be in the class and fetch
             if type(func) is str:
                 out_funcs[i] = getattr(self, func)
 
+            # if a function, add to class, then fetch
+            else:
+                self.add_method(func)
+                out_funcs[i]=getattr(self, func.__name__)
+
+        # store functions for outputs
         self.out_funcs = out_funcs
 
         # initialize parameters
@@ -1267,6 +1315,9 @@ class SAMUS:
         self.nsrot = nsrot
         self.dt = self.period/nsrot  # in seconds
         self.Cmax = Cmax
+
+        # compute the spline for the trajectory
+        self.read_trajectory(data_name=data_name)
 
         # compute the magnitude of the rotation vector
         mag = 2*np.pi/(self.period)
