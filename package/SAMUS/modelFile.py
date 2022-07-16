@@ -12,7 +12,11 @@ import quaternion
 import os
 
 
-class SAMUS:
+import importlib.resources
+from . import meshes
+
+
+class model:
     """
     Create a model of an ellipsoidal asteroid and simulates its evolution.
 
@@ -287,40 +291,14 @@ class SAMUS:
         # set the inital time, for logging
         self.start_time = time.time()
 
-        #create log directory
-        # get path
-        path=os.path.join(os.getcwd(),'logs')
-        # try to make directory
-        try: os.mkdir(path)
-        #if it already exists, continue
-        except FileExistsError: pass
-
-        # create log file
-        self.logfile = open(
-            'logs/{}_{}.txt'.format(self.name, int(np.log10(mu))), 'w')
-
-        # write initial time to log file
-        self.logfile.write("%s: Beginning Initialization... \n" %
-                           (self.convert_time(time.time()-self.start_time)))
-
         # read in mesh, with n refinements
-        self.mesh = Mesh('meshes/3ball%s.xml' % (n))
+        mesh_path=importlib.resources.path('SAMUS.meshes','3ball%s.xml' % (n))
+        self.mesh = Mesh(str(mesh_path))
 
         # rescale the mesh to the input ellipsoids
         self.mesh.coordinates()[:, 0] *= a/2
         self.mesh.coordinates()[:, 1] *= b/2
         self.mesh.coordinates()[:, 2] *= c/2
-
-        "create results directory"
-        path=os.path.join(os.getcwd(),'results')
-        # try to make directory
-        try: os.mkdir(path)
-        #if it already exists, continue
-        except FileExistsError: pass
-
-        # create output file
-        self.outfile = File(
-            "results/{}_{}.pvd".format(self.name, int(np.log10(mu))))
 
         # use Elements to make a mixed function space
         V = VectorElement("CG", self.mesh.ufl_cell(), 2)
@@ -1332,6 +1310,33 @@ class SAMUS:
         self.dt = self.period/nsrot  # in seconds
         self.Cmax = Cmax
 
+        #create log directory
+        # get path
+        logpath=os.path.join(os.getcwd(),'logs')
+        # try to make directory
+        try: os.mkdir(logpath)
+        #if it already exists, continue
+        except FileExistsError: pass
+
+        # create log file
+        self.logfile = open(
+            'logs/{}_{}.txt'.format(self.name, int(np.log10(mu))), 'w')
+
+        # create results directory
+        path=os.path.join(os.getcwd(),'results')
+        # try to make directory
+        try: os.mkdir(path)
+        #if it already exists, continue
+        except FileExistsError: pass
+
+        # create output file
+        self.outfile = File(
+            "results/{}_{}.pvd".format(self.name, int(np.log10(mu))))
+
+        # write initial time to log file
+        self.logfile.write("%s: Beginning Initialization... \n" %
+                           (self.convert_time(time.time()-self.start_time)))
+
         # compute the spline for the trajectory
         self.read_trajectory(data_name=data_name)
 
@@ -1450,7 +1455,8 @@ class SAMUS:
         self.rho = Constant(rho)  # create a Constant to avoid slowdowns
 
         # read in mesh, with n refinements
-        nmesh = Mesh('3ball%s.xml' % (n))
+        mesh_path=importlib.resources.path('SAMUS.meshes','3ball%s.xml' % (n))
+        nmesh = Mesh(str(mesh_path))
 
         # rescale the mesh to the input ellipsoids
         nmesh.coordinates()[:, 0] *= a/2

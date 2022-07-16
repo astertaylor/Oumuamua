@@ -1,0 +1,17 @@
+Metadata-Version: 2.1
+Name: SAMUS
+Version: 0.0.1
+Summary: SAMUS package
+Home-page: https://github.com/astertaylor/SAMUS
+Author: Aster Taylor
+Author-email: astertaylor@uchicago.edu
+License: BSD 2-clause
+Platform: UNKNOWN
+Classifier: Development Status :: 1 - Planning
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: Python :: 3.8
+
+UNKNOWN
+
