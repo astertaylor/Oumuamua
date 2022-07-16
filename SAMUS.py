@@ -9,6 +9,7 @@ import time
 import pandas as pd
 from scipy.interpolate import UnivariateSpline
 import quaternion
+import os
 
 
 class SAMUS:
@@ -286,6 +287,14 @@ class SAMUS:
         # set the inital time, for logging
         self.start_time = time.time()
 
+        #create log directory
+        # get path
+        path=os.path.join(os.getcwd(),'logs')
+        # try to make directory
+        try: os.mkdir(path)
+        #if it already exists, continue
+        except FileExistsError: pass
+
         # create log file
         self.logfile = open(
             'logs/{}_{}.txt'.format(self.name, int(np.log10(mu))), 'w')
@@ -302,7 +311,14 @@ class SAMUS:
         self.mesh.coordinates()[:, 1] *= b/2
         self.mesh.coordinates()[:, 2] *= c/2
 
-        # set output file
+        "create results directory"
+        path=os.path.join(os.getcwd(),'results')
+        # try to make directory
+        try: os.mkdir(path)
+        #if it already exists, continue
+        except FileExistsError: pass
+
+        # create output file
         self.outfile = File(
             "results/{}_{}.pvd".format(self.name, int(np.log10(mu))))
 
