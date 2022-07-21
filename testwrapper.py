@@ -6,7 +6,7 @@ Created on Wed May 25 19:12:33 2022
 """
 
 import numpy as np
-from SAMUS import *
+import SAMUS
 from mpi4py import MPI
 import time
 
@@ -37,9 +37,9 @@ for i,name in enumerate(labels):
     a,b,c=[size*x for x in dims[i]]
     omegavec=axes[i]
     name=name+"_a"+str(size)
-    STOP=False   
+    STOP=False
     while not STOP:
-        file=SAMUS("test",a,b,c,mu,omegavec,rho,n=n)
+        file=SAMUS.model("test",a,b,c,mu,omegavec,rho,n=n)
         frame=file.run_model(10,out_funcs=['moment_of_inertia',ones])
         mu*=10
 

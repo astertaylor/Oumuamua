@@ -1,4 +1,0 @@
-numpy
-numpy-quaternion
-pandas
-scipy

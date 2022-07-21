@@ -6,7 +6,7 @@ Created on Wed May 25 19:12:33 2022
 """
 
 import numpy as np
-from SAMUS import *
+import SAMUS
 from mpi4py import MPI
 import time
 
@@ -35,10 +35,14 @@ for i,name in enumerate(labels):
     a,b,c=[size*x for x in dims[i]]
     omegavec=axes[i]
     name=name+"_a"+str(size)
-    STOP=False   
+    STOP=False
     while not STOP:
-        file=SAMUS(name,a,b,c,mu,omegavec,rho,n=n)
-        STOP=file.run_model(10)
+        file=SAMUS.model(name,a,b,c,mu,omegavec,rho,n=n)
+        frame,div=file.run_model(10)
         mu*=10
 
-print("%s: --- FINISHED --- \n"%((time.time()-start_time)))
+        MoIs=frame['MoIs'].to_numpy()
+        STOP=(MoIs[-1]/MoIs[0]<1.01) and not (div)
+        print(MoIs[-1]/MoIs[0])
+
+print("{:.3e}: --- FINISHED --- \n".format((time.time()-start_time)))
