@@ -29,24 +29,19 @@ labels=["pancake1","pancake2","pancake3","pancake4"]
 dims=[(1,scaleb,scalec),(scalec,1,scaleb),(1,scaleb,scalec),(1,scalec,scaleb)]
 axes=[[0,0,1],[0,0,1],[0,1,0],[0,1,0]]
 
-def ones():
-    return(1,"ones")
+mu=10**5
+a,b,c=[size*x for x in dims[0]]
+omegavec=axes[0]
+name="halved"+"_a"+str(size)
+STOP=False
+while not STOP:
+    file=SAMUS.model(name,a,b,c,mu,omegavec,rho,n=n)
+    frame,div=file.run_model(10,rtol=0.005)
+    mu*=10
 
-for i,name in enumerate(labels):
-    mu=10**5
-    a,b,c=[size*x for x in dims[i]]
-    omegavec=axes[i]
-    name=name+"_a"+str(size)
-    STOP=False
-    while not STOP:
-        file=SAMUS.model("test",a,b,c,mu,omegavec,rho,n=n)
-        frame=file.run_model(10,out_funcs=['moment_of_inertia',ones])
-        mu*=10
+    MoIs=frame['MoIs'].to_numpy()
+    STOP=(MoIs[-1]/MoIs[0]<1.01) and not (div)
+    print(MoIs[-1]/MoIs[0])
 
-        MoIs=frame['MoIs'].to_numpy()
-        STOP=(MoIs[-1]/MoIs[0]<1.01)
-        print(MoIs[-1]/MoIs[0])
-        break
-    break
 
 print("{:.3e}: --- FINISHED --- \n".format((time.time()-start_time)))
