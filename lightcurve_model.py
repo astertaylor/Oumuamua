@@ -11,29 +11,56 @@ import quadpy
 import quaternion
 
 
-period=7.937*3600 #seconds
+period = 7.937*3600  # seconds
 
-def lightcurve(a,b,c,ux,uy,uz,theta,sun=[1,0,0],obs=[0,1,0]):
-    sun=np.quaternion(0,*sun)
-    obs=np.quaternion(0,*obs)
 
-    q=np.quaternion(np.cos(theta/2),ux*np.sin(theta/2),
-                    uy*np.sin(theta/2),uz*np.sin(theta/2))
+def lightcurve(a, b, c, theta, rot=[1,1,0], sun=[1, 0, 0], obs=[0, 1, 0]):
+    ux,uy,uz=rot
 
-    sun=quaternion.as_float_array(np.conj(q)*sun*q)[1:3]
-    obs=quaternion.as_float_array(np.conj(q)*obs*q)[1:3]
+    sun = np.quaternion(0, *sun)
+    obs = np.quaternion(0, *obs)
 
-    def normal(x,a,b,c):
-        norm=1/np.sqrt(x[0]**2/a**4 + x[1]**2/b**4 + x[2]**2/c**4)
-        vector=x/[a**2,b**2,c**2]
-        return(norm*vector)
+    q = np.quaternion(np.cos(theta/2), ux*np.sin(theta/2),
+                      uy*np.sin(theta/2), uz*np.sin(theta/2))
+    q = q/np.abs(q)
 
-    def luminance(x,a,b,c,sun,obs):
-        x=x*[a,b,c]
-        norm=normal(x,a,b,c)
+    sun = quaternion.as_float_array(np.conj(q)*sun*q)[1:]
+    obs = quaternion.as_float_array(np.conj(q)*obs*q)[1:]
 
-        return(np.inner(norm,sun)*np.inner(norm,obs))
+    C = np.zeros((3, 3))
+    C[0, 0] = 1/a**2
+    C[1, 1] = 1/b**2
+    C[2, 2] = 1/c**2
 
-    scheme=quadpy.u3.get_good_scheme(5)
+    Sl = np.sqrt(np.dot(sun.T, np.dot(C, sun)))
+    So = np.sqrt(np.dot(obs.T, np.dot(C, obs)))
 
-    scheme.integrate(lambda x: luminance(x,a,b,c,sun,obs),)
+    alpha = np.arccos((np.dot(sun.T, np.dot(C, obs))/(Sl*So)))
+
+    S = np.sqrt(Sl**2+So**2+2*Sl*So*np.cos(alpha))
+
+    cosl = (Sl+So*np.cos(alpha))/S
+    sinl = (So*np.sin(alpha))/S
+
+    if sinl < 0:
+        lam = -np.arccos(cosl) % (2*np.pi)
+    else:
+        lam = np.arccos(cosl)
+
+    return(1/8*a*b*c*Sl*So/S*
+           (np.cos(lam-alpha)+np.cos(lam)+np.sin(lam)*np.sin(lam-alpha)*
+            np.log(1/np.tan(lam/2)*np.cos((alpha-lam)/2))))
+
+values=np.linspace(0,5,1000)
+times=values*period
+
+theta_list=(values%1)*2*np.pi
+
+values=[]
+for theta in theta_list:
+    values.append(lightcurve(10,2,3,theta))
+
+data=np.array([times,values]).T
+
+outFrame = pd.DataFrame(data, columns=["Times","Lightcurve"])
+outFrame.to_csv('test.csv')
