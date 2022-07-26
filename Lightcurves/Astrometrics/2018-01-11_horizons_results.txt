@@ -1,0 +1,187 @@
+*******************************************************************************
+JPL/HORIZONS              1I/'Oumuamua (A/2017 U1)         2022-Jul-25 16:31:53
+Rec #:50466294 (+COV) Soln.date: 2018-Jun-26_12:17:57    # obs: 207 (2017-2018)
+
+NOTE:
+This orbit solution includes non-gravitational perturbations as described in 
+Micheli et al. (2018): http://dx.doi.org/10.1038/s41586-018-0254-4
+
+The behavior of these accelerations outside the observed data arc from
+2017 October 14 to 2018 January 2 can only be assumed.  Predictions outside
+this time interval, especially prior to October 2017, could be much more
+uncertain than reported here.
+ 
+IAU76/J2000 helio. ecliptic osc. elements (au, days, deg., period=Julian yrs):
+ 
+  EPOCH=  2458080.5 ! 2017-Nov-23.00 (TDB)         Residual RMS= .063527
+   EC= 1.201133796102373   QR= .2559115812959116   TP= 2458006.0073213754
+   OM= 24.59690955523242   W=  241.8105360304898   IN= 122.7417062847286
+   A= -1.27234500742808    MA= 51.15761979369358   ADIST= 9.999999E99
+   PER= 9.999999E99        N= .68674693            ANGMOM= .012910695
+   DAN= 1.30212            DDN= .35938             L= 159.3364847
+   B= -47.8467702          MOID= .0958212          TP= 2017-Sep-09.5073213754
+ 
+Asteroid physical parameters (km, seconds, rotational period in hours):
+   GM= n.a.                RAD= n.a.               ROTPER= 7.937
+   H= 22.08                G= .150                 B-V= n.a.
+                           ALBEDO= n.a.            STYP= n.a.
+ 
+Asteroid non-gravitational force model (AMRAT= m^2/kg;A1,A2,A3=au/d^2;R0=au):
+   AMRAT=  0.
+   A1= 2.790193367004E-7   A2= 1.441264152527E-8   A3= 1.573922634125E-8
+ Non-standard or simulated/proxy model:
+   ALN=  .04083733261  NK=  2.6      NM=  2.       NN=  3.       R0=  5.
+ 
+ASTEROID comments: 
+1: soln ref.= JPL#16
+2: source=ORB; Sol. 7c, Micheli et al. 2018
+*******************************************************************************
+
+
+*******************************************************************************
+Ephemeris / WWW_USER Mon Jul 25 16:31:53 2022 Pasadena, USA      / Horizons    
+*******************************************************************************
+Target body name: 1I/'Oumuamua (A/2017 U1)        {source: JPL#16}
+Center body name: Earth (399)                     {source: DE441}
+Center-site name: GEOCENTRIC
+*******************************************************************************
+Start time      : A.D. 2018-Jan-11 00:00:00.0000 UT      
+Stop  time      : A.D. 2018-Jan-17 00:00:00.0000 UT      
+Step-size       : 360 minutes
+*******************************************************************************
+Target pole/equ : No model available
+Target radii    : (unavailable)                                                
+Center geodetic : 0.00000000,0.00000000,0.0000000 {E-lon(deg),Lat(deg),Alt(km)}
+Center cylindric: 0.00000000,0.00000000,0.0000000 {E-lon(deg),Dxy(km),Dz(km)}
+Center pole/equ : ITRF93                          {East-longitude positive}
+Center radii    : 6378.1 x 6378.1 x 6356.8 km     {Equator, meridian, pole}    
+Target primary  : Sun
+Vis. interferer : MOON (R_eq= 1737.400) km        {source: DE441}
+Rel. light bend : Sun, EARTH                      {source: DE441}
+Rel. lght bnd GM: 1.3271E+11, 3.9860E+05 km^3/s^2                              
+Small-body perts: Yes                             {source: SB441-N16}
+Atmos refraction: NO (AIRLESS)
+RA format       : HMS
+Time format     : BOTH
+EOP file        : eop.220724.p221017                                           
+EOP coverage    : DATA-BASED 1962-JAN-20 TO 2022-JUL-24. PREDICTS-> 2022-OCT-16
+Units conversion: 1 au= 149597870.700 km, c= 299792.458 km/s, 1 day= 86400.0 s 
+Table cut-offs 1: Elevation (-90.0deg=NO ),Airmass (>38.000=NO), Daylight (NO )
+Table cut-offs 2: Solar elongation (  0.0,180.0=NO ),Local Hour Angle( 0.0=NO )
+Table cut-offs 3: RA/DEC angular rate (     0.0=NO )                           
+*******************************************************************************
+Initial IAU76/J2000 heliocentric ecliptic osculating elements (au, days, deg.):
+  EPOCH=  2458080.5 ! 2017-Nov-23.00 (TDB)         Residual RMS= .063527       
+   EC= 1.201133796102373   QR= .2559115812959116   TP= 2458006.0073213754      
+   OM= 24.59690955523242   W=  241.8105360304898   IN= 122.7417062847286       
+  Equivalent ICRF heliocentric cartesian coordinates (au, au/d):
+   X= 1.889136186533479E+00  Y= 5.222899434623107E-01  Z= 5.088057830311858E-01
+  VX= 2.106502285864550E-02 VY= 3.535022471254454E-04 VZ= 8.998631872968255E-03
+Asteroid physical parameters (km, seconds, rotational period in hours):        
+   GM= n.a.                RAD= n.a.               ROTPER= 7.937               
+   H= 22.08                G= .150                 B-V= n.a.                   
+                           ALBEDO= n.a.            STYP= n.a.                  
+Asteroid non-gravitational force model (AMRAT= m^2/kg;A1,A2,A3=au/d^2;R0=au):  
+   AMRAT=  0.                                                                  
+   A1= 2.790193367004E-7   A2= 1.441264152527E-8   A3= 1.573922634125E-8       
+ Non-standard or simulated/proxy model:                                        
+   ALN=  .04083733261  NK=  2.6      NM=  2.       NN=  3.       R0=  5.       
+******************************************************************************************************************************
+ Date__(UT)__HR:MN Date_________JDUT                   r        rdot             delta      deldot       phi  PAB-LON  PAB-LAT
+******************************************************************************************************************************
+$$SOE
+2018-Jan-11 00:00 2458129.500000000      3.053824229305  34.9983851  3.26933018843664  62.1872304   17.4681   7.6649  11.9509
+2018-Jan-11 06:00 2458129.750000000      3.058875689324  34.9872121  3.27830476396773  62.1397627   17.4134   7.6816  11.9598
+2018-Jan-11 12:00 2458130.000000000      3.063925539601  34.9760717  3.28727246127242  62.0919412   17.3587   7.6982  11.9686
+2018-Jan-11 18:00 2458130.250000000      3.068973784844  34.9649639  3.29623322926253  62.0437658   17.3040   7.7149  11.9774
+2018-Jan-12 00:00 2458130.500000000      3.074020429742  34.9538884  3.30518701683293  61.9952364   17.2493   7.7317  11.9862
+2018-Jan-12 06:00 2458130.750000000      3.079065478962  34.9428452  3.31413377286923  61.9463530   17.1945   7.7485  11.9949
+2018-Jan-12 12:00 2458131.000000000      3.084108937148  34.9318340  3.32307344625540  61.8971155   17.1398   7.7653  12.0036
+2018-Jan-12 18:00 2458131.250000000      3.089150808925  34.9208547  3.33200598588134  61.8475240   17.0850   7.7822  12.0123
+2018-Jan-13 00:00 2458131.500000000      3.094191098895  34.9099072  3.34093134064967  61.7975786   17.0302   7.7992  12.0210
+2018-Jan-13 06:00 2458131.750000000      3.099229811639  34.8989913  3.34984945948284  61.7472796   16.9755   7.8162  12.0296
+2018-Jan-13 12:00 2458132.000000000      3.104266951717  34.8881069  3.35876029133019  61.6966270   16.9207   7.8332  12.0382
+2018-Jan-13 18:00 2458132.250000000      3.109302523670  34.8772538  3.36766378517458  61.6456212   16.8659   7.8503  12.0468
+2018-Jan-14 00:00 2458132.500000000      3.114336532017  34.8664320  3.37655989003965  61.5942625   16.8111   7.8675  12.0554
+2018-Jan-14 06:00 2458132.750000000      3.119368981256  34.8556412  3.38544855499648  61.5425512   16.7564   7.8847  12.0640
+2018-Jan-14 12:00 2458133.000000000      3.124399875864  34.8448813  3.39432972917116  61.4904878   16.7016   7.9019  12.0725
+2018-Jan-14 18:00 2458133.250000000      3.129429220300  34.8341521  3.40320336175164  61.4380726   16.6468   7.9192  12.0810
+2018-Jan-15 00:00 2458133.500000000      3.134457019002  34.8234536  3.41206940199562  61.3853062   16.5920   7.9365  12.0895
+2018-Jan-15 06:00 2458133.750000000      3.139483276386  34.8127856  3.42092779923783  61.3321892   16.5372   7.9539  12.0979
+2018-Jan-15 12:00 2458134.000000000      3.144507996850  34.8021480  3.42977850289821  61.2787221   16.4824   7.9713  12.1064
+2018-Jan-15 18:00 2458134.250000000      3.149531184772  34.7915406  3.43862146248978  61.2249057   16.4276   7.9887  12.1148
+2018-Jan-16 00:00 2458134.500000000      3.154552844509  34.7809632  3.44745662762703  61.1707407   16.3728   8.0063  12.1232
+2018-Jan-16 06:00 2458134.750000000      3.159572980402  34.7704159  3.45628394803418  61.1162278   16.3180   8.0238  12.1316
+2018-Jan-16 12:00 2458135.000000000      3.164591596767  34.7598983  3.46510337355415  61.0613679   16.2632   8.0414  12.1399
+2018-Jan-16 18:00 2458135.250000000      3.169608697906  34.7494104  3.47391485415720  61.0061620   16.2084   8.0590  12.1482
+2018-Jan-17 00:00 2458135.500000000      3.174624288098  34.7389521  3.48271833994994  60.9506110   16.1536   8.0767  12.1566
+$$EOE
+******************************************************************************************************************************
+Column meaning:
+ 
+TIME
+
+  Times PRIOR to 1962 are UT1, a mean-solar time closely related to the
+prior but now-deprecated GMT. Times AFTER 1962 are in UTC, the current
+civil or "wall-clock" time-scale. UTC is kept within 0.9 seconds of UT1
+using integer leap-seconds for 1972 and later years.
+
+  Conversion from the internal Barycentric Dynamical Time (TDB) of solar
+system dynamics to the non-uniform civil UT time-scale requested for output
+has not been determined for UTC times after the next July or January 1st.
+Therefore, the last known leap-second is used as a constant over future
+intervals.
+
+  Time tags refer to the UT time-scale conversion from TDB on Earth
+regardless of observer location within the solar system, although clock
+rates may differ due to the local gravity field and no analog to "UT"
+may be defined for that location.
+
+  Any 'b' symbol in the 1st-column denotes a B.C. date. First-column blank
+(" ") denotes an A.D. date. Calendar dates prior to 1582-Oct-15 are in the
+Julian calendar system. Later calendar dates are in the Gregorian system.
+
+  NOTE: "n.a." in output means quantity "not available" at the print-time.
+ 
+ 'r        rdot' =
+   The Sun's apparent range ("r", light-time aberrated) and range-rate ("rdot")
+relative to the target center, as seen by the observer. A positive "rdot" means
+the target center was moving away from the Sun, negative means moving toward
+the Sun.  Units: AU and KM/S
+ 
+ 'delta      deldot' =
+   Apparent range ("delta", light-time aberrated) and range-rate ("delta-dot")
+of the target center relative to the observer. A positive "deldot" means the
+target center is moving away from the observer, negative indicates movement
+toward the observer.  Units: AU and KM/S
+ 
+ 'phi  PAB-LON  PAB-LAT' =
+   "phi" is the true PHASE ANGLE at the observers' location at print time.
+"PAB-LON" and "PAB-LAT" are the J2000 ecliptic longitude and latitude of the
+phase angle bisector direction; the outward directed angle bisecting the arc
+created by the apparent vector from Sun to target center and the astrometric
+vector from observer to target center. For an otherwise uniform ellipsoid, the
+time when its long-axis is perpendicular to the PAB direction approximately
+corresponds to lightcurve maximum (or maximum brightness) of the body. PAB is
+discussed in Harris et al., Icarus 57, 251-258 (1984).
+
+   Units: DEGREES, DEGREES, DEGREES
+
+Computations by ...
+
+    Solar System Dynamics Group, Horizons On-Line Ephemeris System
+    4800 Oak Grove Drive, Jet Propulsion Laboratory
+    Pasadena, CA  91109   USA
+
+    General site: https://ssd.jpl.nasa.gov/
+    Mailing list: https://ssd.jpl.nasa.gov/email_list.html
+    System news : https://ssd.jpl.nasa.gov/horizons/news.html
+    User Guide  : https://ssd.jpl.nasa.gov/horizons/manual.html
+    Connect     : browser        https://ssd.jpl.nasa.gov/horizons/app.html#/x
+                  API            https://ssd-api.jpl.nasa.gov/doc/horizons.html
+                  command-line   telnet ssd.jpl.nasa.gov 6775
+                  e-mail/batch   https://ssd.jpl.nasa.gov/ftp/ssd/hrzn_batch.txt
+                  scripts        https://ssd.jpl.nasa.gov/ftp/ssd/SCRIPTS
+    Author      : Jon.D.Giorgini@jpl.nasa.gov
+
+******************************************************************************************************************************
