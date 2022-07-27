@@ -141,7 +141,7 @@ def gr_indicator(chain, gr_threshold=1.01):
     return(np.max(RGR) < gr_threshold)
 
 
-def MCMC(x0, nwalk=10, nminsteps=10**6, nconv=20, step=1, logfunc=None, args=None, convergence_func=None, conv_args=None):
+def MCMC(logfunc, x0, args=None, nwalk=10, nminsteps=10**6, nconv=20, step=1, convergence_func=None, conv_args=None):
 
     from numpy import matlib
 
@@ -207,44 +207,78 @@ def MCMC(x0, nwalk=10, nminsteps=10**6, nconv=20, step=1, logfunc=None, args=Non
 
     return(np.reshape(chain, [-1, dims]))
 
+def SSE(x, y):
+    return(np.sum(np.square(x-y)))
 
-def lightcurve(a, b, c, theta, rot=[1, 1, 0], sun=[1, 0, 0], obs=[0, 1, 0]):
-    ux, uy, uz = rot
+def MINwrapper(x, theta, phi, psi, a, b, c, alpha, beta, data):
+    betainit, delV = x[0], x[1]
 
-    sun = np.quaternion(0, *sun)
-    obs = np.quaternion(0, *obs)
+    light = lightcurve(theta, phi, psi, betainit,
+                       delV, a, b, c, alpha, beta)
 
-    q = np.quaternion(np.cos(theta/2), ux*np.sin(theta/2),
-                      uy*np.sin(theta/2), uz*np.sin(theta/2))
-    q = q/np.abs(q)
+    return(SSE(light,data))
 
-    sun = quaternion.as_float_array(np.conj(q)*sun*q)[1:]
-    obs = quaternion.as_float_array(np.conj(q)*obs*q)[1:]
 
-    C = np.zeros((3, 3))
-    C[0, 0] = 1/a**2
-    C[1, 1] = 1/b**2
-    C[2, 2] = 1/c**2
+def lightcurve(theta, phi, psi, betainit, delV, a, b, c, alpha, beta):
+    beta += betainit
 
-    Sl = np.sqrt(np.dot(sun.T, np.dot(C, sun)))
-    So = np.sqrt(np.dot(obs.T, np.dot(C, obs)))
+    rot = np.array([np.cos(beta/2), np.sin(beta/2)*np.cos(phi), np.sin(beta/2)
+                   * np.sin(phi) * np.cos(psi), np.sin(beta/2)*np.sin(phi)*np.sin(psi)]).T
+    rot = quaternion.as_quat_array(rot)
 
-    alpha = np.arccos((np.dot(sun.T, np.dot(C, obs))/(Sl*So)))
+    obs = np.array([np.cos(alpha), np.sin(alpha) *
+                   np.cos(theta), np.sin(alpha)*np.sin(theta)]).T
 
-    S = np.sqrt(Sl**2+So**2+2*Sl*So*np.cos(alpha))
+    obs = np.append(np.zeros(obs.shape[0])[:, np.newaxis], obs, axis=1)
+    obs = quaternion.as_quat_array(obs)
 
-    cosl = (Sl+So*np.cos(alpha))/S
-    sinl = (So*np.sin(alpha))/S
+    obs = rot*obs*np.conj(rot)
 
-    if sinl < 0:
-        lam = -np.arccos(cosl) % (2*np.pi)
-    else:
-        lam = np.arccos(cosl)
+    obs = quaternion.as_float_array(obs)[:, 1:]
 
-    return(a*b*c*Sl*So/S *
-           (np.cos(lam-alpha)+np.cos(lam)+np.sin(lam)*np.sin(lam-alpha) *
-            np.log(1/np.tan(lam/2)*np.cos((alpha-lam)/2))))
+    sun = np.quaternion(0, 1, 0, 0)
+    sun = rot*sun*np.conj(rot)
+    sun = quaternion.as_float_array(sun)[:, 1:]
 
+    Ss = np.sqrt(np.sum([1/a**2, 1/b**2, 1/c**2]*np.square(sun), axis=1))
+    So = np.sqrt(np.sum([1/a**2, 1/b**2, 1/c**2]*np.square(obs), axis=1))
+
+    palpha = np.arccos(
+        np.sum([1/a**2, 1/b**2, 1/c**2]*sun*obs, axis=1)/(Ss*So))
+
+    S = np.sqrt(Ss**2+So**2 + 2*Ss*So*np.cos(palpha))
+
+    cosl = (Ss+So*np.cos(palpha))/S
+    sinl = (So*np.sin(palpha))/S
+
+    lam = np.where(sinl < 0, (-np.arccos(cosl) % (2*np.pi)), (np.arccos(cosl)))
+
+    H = delV-2.5*np.log10(a*b*c*Ss*So/S*(np.cos(lam-palpha)+np.cos(lam)+np.sin(lam)
+                                         * np.sin(lam-palpha)*np.log(1/np.tan(lam/2) *
+                                                                     1/np.tan((palpha-lam)/2))))
+    return(H)
+
+
+def lnL(theta,phi,psi,a,b,c,alpha,beta,data,var):
+    from scipy.optimize import minimize
+    args=(theta,phi,psi,a,b,c,alpha,beta,data)
+
+    opt=minimize(MINwrapper,np.array([np.pi/2,30]),args=(theta,phi,psi,a,b,c,alpha,beta,data),bounds=[(0,np.pi),(20,40)]).x
+
+    light=lightcurve(theta, phi, psi, opt[0], opt[1], a, b, c, alpha, beta)
+
+    return(-0.5*(np.sum((light-data)**2/var)+2*np.pi*np.sum(var)))
+
+def MCMCwrapper(x,args):
+    a, b, c, alpha, beta, data, var = args
+    outputs=np.zeros(x.shape[0])
+
+    for i,vec in enumerate(x):
+        theta=vec[0];phi=vec[1];psi=vec[2];
+
+        outputs[i]=lnL(theta,phi,psi,a,b,c,alpha,beta,data,var)
+
+    return(outputs)
 
 belton=pd.read_csv("BeltonLightcurves.csv")
 indcut=335
@@ -255,35 +289,18 @@ beltime=belton['Time'].to_numpy()
 belmag=belton['Magnitude'].to_numpy()
 belsig=belton['msig'].to_numpy()
 
-belmagnorm=belmag-np.mean(belmag)
-belmagnorm=belmagnorm/np.max(np.abs(belmagnorm))
-
 astro=pd.read_csv("2017-10-25_horizons_results.csv")
 
 asttime=astro['Time'].to_numpy()
-sundist=astro['SunDist'].to_numpy()
-earthdist=astro['EarthDist'].to_numpy()
 phase=astro['Phase'].to_numpy()
 
-times=np.linspace(asttime[0],asttime[-1],1000)
-sundist=UnivariateSpline(asttime,sundist)
-earthdist=UnivariateSpline(asttime,earthdist)
 phase=UnivariateSpline(asttime,phase)
 
 period = 7.937*3600  # seconds
-curve=[]
-for t in times:
-    theta=2*np.pi*(t%period)/period
+alpha=phase(beltime)
+beta=2*np.pi*(beltime/period)%period
 
-    alpha=phase(t)
-    light=lightcurve(115,111,19,theta,obs=[np.cos(alpha),np.sin(alpha),0])
-    #light*=2e30/(sundist(t)*earthdist(t))**2
-    curve.append(-2.5*np.log10(light))
+args=(115,111,19,alpha,beta,belmag,np.square(belsig))
 
-curvenorm=curve-np.mean(curve)
-curvenorm=curvenorm/np.max(np.abs(curvenorm))
-
-plt.figure(figsize=(15,10))
-plt.scatter(beltime,belmagnorm)
-plt.plot(times,curvenorm)
-plt.savefig("test.png")
+outputs=MCMC(MCMCwrapper,x0=[np.pi,np.pi/2,np.pi],args=args,convergence_func=gr_indicator,nminsteps=1000)
+print(outputs.shape)
