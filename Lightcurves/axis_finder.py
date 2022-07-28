@@ -11,6 +11,7 @@ import quadpy
 import quaternion
 from scipy.interpolate import UnivariateSpline
 import matplotlib.pyplot as plt
+from parfor import parfor
 
 
 def sqrtpdf(x,args):
@@ -25,14 +26,14 @@ def sqrtpdf(x,args):
 def randDraw(pdf,args,a=100,b=None,dn=1):
     '''
     randomly draws from the distribution pdf
-    
+
     pdf- function object which returns the probability of drawing at x. Note that it need not be normalized.
     args- arguments for the pdf function
     a- lower limit of the points to sample for the inversion. it is assumed that the PDF is essentially 0 below this value
     b- upper limit of the points to sample for the inversion. it is assumed that the PDF is essentially 0 above this value.
         if None, is taken to be the opposite sign of a
-    dn- spacing of sampling points. 
-    
+    dn- spacing of sampling points.
+
     '''
     if b is None: b=a;a=-b
     assert(a<b)
@@ -48,14 +49,14 @@ def randDraw(pdf,args,a=100,b=None,dn=1):
         CDF.append(A*quad(pdf,-np.infty,x,args)[0])
     inverse=interp1d(CDF,xsamp)
     return(GenRand(inverse))
-    
+
 
 
 class GenRand:
     import numpy as np
     def __init__(self, inv):
         self.inv=inv
-        
+
     def __call__(self, size):
         x=np.random.uniform(size=int(size))
         return(self.inv(x))
@@ -99,7 +100,7 @@ def gr_indicator(chain, gr_threshold=1.01):
     return(np.max(RGR) < gr_threshold)
 
 
-def MCMC(logfunc, x0, args=None, nwalk=10, nminsteps=10**3, nmaxsteps=10**5, 
+def MCMC(logfunc, x0, args=None, nwalk=10, nminsteps=10**3, nmaxsteps=10**5,
          nconv=20, step=1, convergence_func=None, conv_args=None):
     from numpy import matlib
 
@@ -140,7 +141,7 @@ def MCMC(logfunc, x0, args=None, nwalk=10, nminsteps=10**3, nmaxsteps=10**5,
 
         if nsteps > nmaxsteps:
             break
-        
+
         print(nsteps)
     return(np.reshape(chain, [-1, dims]))
 
@@ -203,9 +204,9 @@ def lnL(theta,phi,psi,a,b,c,alpha,beta,data,var):
     opt=minimize(MINwrapper,np.array([np.pi/2,30]),args=(theta,phi,psi,a,b,c,alpha,beta,data),bounds=[(0,np.pi),(20,40)]).x
 
     light=lightcurve(theta, phi, psi, opt[0], opt[1], a, b, c, alpha, beta)
-    
+
     lnL=-0.5*(np.sum((light-data)**2/var)+2*np.pi*np.sum(var))
-    
+
     if theta<0 or theta>=2*np.pi:
         lnL+=-1e15
     if phi<0 or phi>np.pi/2:
@@ -216,6 +217,7 @@ def lnL(theta,phi,psi,a,b,c,alpha,beta,data,var):
     return(lnL)
 
 def MCMCwrapper(x,args):
+
     a, b, c, alpha, beta, data, var = args
     outputs=np.zeros(x.shape[0])
 
@@ -225,6 +227,7 @@ def MCMCwrapper(x,args):
         outputs[i]=lnL(theta,phi,psi,a,b,c,alpha,beta,data,var)
 
     return(outputs)
+
 
 belton=pd.read_csv("BeltonLightcurves.csv")
 indcut=335
@@ -248,6 +251,29 @@ beta=2*np.pi*(beltime/period)%period
 
 args=(115,111,19,alpha,beta,belmag,np.square(belsig))
 
-outputs=MCMC(MCMCwrapper,x0=[np.pi,np.pi/2,np.pi],args=args,
-             convergence_func=gr_indicator,conv_args=1.01,nminsteps=100,nmaxsteps=1000)
-pd.DataFrame(outputs,columns=["Theta","Phi","Psi"]).to_csv("MCMCOutput.csv")
+#outputs=MCMC(MCMCwrapper,x0=[np.pi,np.pi/2,np.pi],args=args,
+#             convergence_func=gr_indicator,conv_args=1.01,nminsteps=100,nmaxsteps=1000)
+#pd.DataFrame(outputs,columns=["Theta","Phi","Psi"]).to_csv("MCMCOutput.csv")
+
+
+def parparamsearch():
+    theta=np.linspace(0,2*np.pi,20)
+    phi=np.linspace(0, np.pi,20)
+    psi=np.linspace(0,2*np.pi,20)
+
+    THETA,PHI,PSI=np.meshgrid(theta,phi,psi,indexing='ij')
+
+    vals=np.zeros(THETA.size)
+    @parfor(range(THETA.size))
+    def fun(i):
+        theta=THETA.flatten()[i]
+        phi=PHI.flatten()[i]
+        psi=PSI.flatten()[i]
+
+        vals[i]=lnL(theta,phi,psi,1,111/115,19/115,alpha,beta,belmag,belsig)
+
+    ind=np.argmax(vals)
+    return(THETA.flatten()[ind],PHI.flatten()[ind],PSI.flatten()[ind])
+
+if __name__ == '__main__':
+    print(parparamsearch())
