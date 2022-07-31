@@ -14,63 +14,63 @@ from tqdm import tqdm
 def fixed_lightcurve(theta,a,b,c,rot=[0,0,1],obs=[1,0,0],N=250):
     ndata=theta.size
     obs=np.quaternion(0,*obs)
-    
+
     # Generate x,y points
     x=np.linspace(-a,a,N)
     y=np.linspace(-b,b,N)
-    
+
     X,Y=np.meshgrid(x,y,indexing='ij')
-    
+
     # Remove the points outside of bounds
     pts_in=np.where(X**2/a**2+Y**2/b**2<=1)
     X=X[pts_in]
     Y=Y[pts_in]
-    
+
     # Generate z points for the x and y points
     z=c*np.sqrt(np.abs(1-X**2/a**2-Y**2/b**2))
-    
+
     # Get +/- z points
     x=np.append(X,X)
     y=np.append(Y,Y)
     z=np.append(z,-z)
-    
+
     npts=z.size
-    
+
     # Combine points
     pts=np.array([x,y,z]).T
     pts=np.tile(pts[:,:,np.newaxis],ndata)
-        
+
     nrot=np.outer(np.array(rot),np.sin(theta/2))
     nrot=np.append(np.cos(theta[np.newaxis,:]/2),nrot,axis=0)
-    
+
     q=quaternion.as_quat_array(nrot.T)
     q*=1/np.abs(q)
-    
+
     obs=np.conj(q)*obs*q
     obs=quaternion.as_float_array(obs)[:,1:]
-    
+
     obs=np.repeat(obs.T[np.newaxis,:,:],npts,axis=0)
-    
+
     inner=np.sum(pts*obs,axis=1)
     inner=np.repeat(inner[:,np.newaxis,:],3,axis=1)
-    
+
     proj=pts-inner*obs
-    proj=np.append(np.zeros((npts,ndata))[:,np.newaxis,:],proj,axis=1)    
-    
+    proj=np.append(np.zeros((npts,ndata))[:,np.newaxis,:],proj,axis=1)
+
     proj=np.moveaxis(proj,1,2)
     proj=quaternion.as_quat_array(proj)
-    
+
     q=np.repeat(q[np.newaxis,:],npts,axis=0)
-    
+
     proj=q*proj*np.conj(q)
     proj=quaternion.as_float_array(proj)
     proj=proj[:,:,2:]
-    
+
     output=[]
     for i in tqdm(range(ndata)):
         hull=scipy.spatial.ConvexHull(proj[:,i,:])
         output.append(hull.volume)
-    
+
     return(np.array(output))
 
 def simple_curve(theta,a,b,c):
@@ -132,7 +132,5 @@ plt.xticks(np.pi*np.linspace(0,2,9),
                    "$5\\pi/4$","$3\\pi/2$","$7\\pi/4$","$2\\pi$"])
 plt.xlabel("$\\theta$")
 plt.ylabel("$\\log_{10}(\\frac{|L_1-L_0|}{L_0})$")
-plt.savefig("num_lightcurve.pdf",bbox_inches='tight',
+plt.savefig("num_lightcurve_comp.pdf",bbox_inches='tight',
             dpi=300)
-        
-    
