@@ -19,15 +19,15 @@ rho=0.5 #density in g/cm^3, assumed constant. in Oumuamua, estimates are 1500-28
 
 size=95 #SIZING, in METERS
 
-period=7.937 # in hours
+period=7.3919 # in hours
 
 n=0 #number of mesh refinements
 
 scaleb=111/115;scalec=19/115
 
-labels=["pancake1","pancake2","pancake3","pancake4"]
-dims=[(1,scaleb,scalec),(scalec,1,scaleb),(1,scaleb,scalec),(1,scalec,scaleb)]
-axes=[[0,0,1],[0,0,1],[0,1,0],[0,1,0]]
+labels=["pancake"]
+dims=[(1,scaleb,scalec)]
+axes=[[0.0375,-0.4853,0.8735]]
 
 
 for i,name in enumerate(labels):
@@ -38,7 +38,7 @@ for i,name in enumerate(labels):
     STOP=False
     while not STOP:
         file=SAMUS.model(name,a,b,c,mu,omegavec,rho,n=n)
-        frame,div=file.run_model(10,data_name='oumuamua_traj')
+        frame,div=file.run_model(10,data_name='oumuamua_traj',period=period)
         mu*=10
 
         MoIs=frame['MoIs'].to_numpy()
