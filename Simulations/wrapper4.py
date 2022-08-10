@@ -27,7 +27,7 @@ scaleb=111/115;scalec=19/115
 
 labels=["pancake"]
 dims=[(1,scaleb,scalec)]
-axes=[[0.0375,-0.4853,0.8735]]
+axes=[[0.1475,0.3140,0.9379]]
 
 
 for i,name in enumerate(labels):
