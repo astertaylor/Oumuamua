@@ -32,9 +32,9 @@ for file in glob.glob('*horizons_results.txt'):
 
     # loop over all lines
     for dat in lines:
-        # if lines begin with a number, read in, otherwise, ignore
+        # if the second character in the line is a number, read in, otherwise, ignore
         try:
-            int(dat[0])
+            int(dat[1])
             nlines.append(dat)
         except:
             continue
