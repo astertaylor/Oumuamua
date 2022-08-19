@@ -1,0 +1,218 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 13.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[      6951,        208]
+NotebookOptionsPosition[      5836,        182]
+NotebookOutlinePosition[      6284,        199]
+CellTagsIndexPosition[      6241,        196]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell["\<\
+Here we compare the tidal and outgassing torques, removing all of the \
+constant terms and replacing them with \\alpha and \\beta.\
+\>", "Text",
+ CellChangeTimes->{{3.8690812659609985`*^9, 3.8690812735340643`*^9}, {
+  3.8690813942374277`*^9, 
+  3.8690814081432643`*^9}},ExpressionUUID->"bd0b5caa-c962-4dd2-9b90-\
+9d7c1fcfe57c"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"\[Tau]tidal", "=", 
+   RowBox[{
+    RowBox[{"-", "\[Alpha]"}], 
+    FractionBox[
+     RowBox[{
+      SuperscriptBox["a", "5"], " ", "\[Epsilon]", " ", 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"-", "1"}], "+", 
+        SuperscriptBox["\[Epsilon]", "2"]}], ")"}], " ", "\[Rho]", " ", "r_H",
+       " ", 
+      RowBox[{"Sin", "[", 
+       RowBox[{"2", " ", "\[Theta]"}], "]"}]}], 
+     SuperscriptBox[
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{
+         SuperscriptBox["a", "2"], " ", 
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{"-", "1"}], "+", 
+           SuperscriptBox["\[Epsilon]", "2"]}], ")"}], " ", 
+         SuperscriptBox[
+          RowBox[{"Cos", "[", "\[Theta]", "]"}], "2"]}], "+", 
+        SuperscriptBox["r_H", "2"]}], ")"}], "2"]]}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"\[Tau]jet", "=", 
+   RowBox[{
+    RowBox[{"-", "\[Beta]"}], 
+    FractionBox[
+     RowBox[{
+      SuperscriptBox["a", "5"], "\[Epsilon]", " ", 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"-", "1"}], "+", 
+        SuperscriptBox["\[Epsilon]", "2"]}], ")"}], " ", "\[Rho]", " ", 
+      RowBox[{"Sin", "[", 
+       RowBox[{"2", " ", "\[Theta]"}], "]"}]}], 
+     RowBox[{
+      SuperscriptBox["r_H", "2"], " ", 
+      SqrtBox[
+       RowBox[{
+        SuperscriptBox["a", "2"], " ", 
+        RowBox[{"(", 
+         RowBox[{
+          SuperscriptBox[
+           RowBox[{"Cos", "[", "\[Theta]", "]"}], "2"], "+", 
+          RowBox[{
+           SuperscriptBox["\[Epsilon]", "2"], " ", 
+           SuperscriptBox[
+            RowBox[{"Sin", "[", "\[Theta]", "]"}], "2"]}]}], ")"}]}]]}]]}]}], 
+  ";"}]}], "Input",
+ CellChangeTimes->{{3.8690812761044335`*^9, 3.8690813044483786`*^9}, {
+  3.86908135704055*^9, 3.869081392303983*^9}, {3.8690814410790462`*^9, 
+  3.869081449380147*^9}},
+ CellLabel->"In[1]:=",ExpressionUUID->"37aac5f4-3db5-41b6-b896-858adf53e6ca"],
+
+Cell["Now, we compute the ratio.", "Text",
+ CellChangeTimes->{{3.8690814520220804`*^9, 3.8690814578250847`*^9}, 
+   3.86908165358566*^9},ExpressionUUID->"4d0bdc3c-7703-4f6f-af54-\
+c623576f2070"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"\[CapitalLambda]", "=", 
+  RowBox[{"\[Tau]jet", "/", "\[Tau]tidal"}]}]], "Input",
+ CellChangeTimes->{{3.869081466871482*^9, 3.8690815107717285`*^9}},
+ CellLabel->"In[3]:=",ExpressionUUID->"929dd546-c569-4b23-a525-5451c0d6cf37"],
+
+Cell[BoxData[
+ FractionBox[
+  RowBox[{"\[Beta]", " ", 
+   SuperscriptBox[
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{
+       SuperscriptBox["a", "2"], " ", 
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"-", "1"}], "+", 
+         SuperscriptBox["\[Epsilon]", "2"]}], ")"}], " ", 
+       SuperscriptBox[
+        RowBox[{"Cos", "[", "\[Theta]", "]"}], "2"]}], "+", 
+      SuperscriptBox["r_H", "2"]}], ")"}], "2"]}], 
+  RowBox[{"\[Alpha]", " ", 
+   SuperscriptBox["r_H", "3"], " ", 
+   SqrtBox[
+    RowBox[{
+     SuperscriptBox["a", "2"], " ", 
+     RowBox[{"(", 
+      RowBox[{
+       SuperscriptBox[
+        RowBox[{"Cos", "[", "\[Theta]", "]"}], "2"], "+", 
+       RowBox[{
+        SuperscriptBox["\[Epsilon]", "2"], " ", 
+        SuperscriptBox[
+         RowBox[{"Sin", "[", "\[Theta]", "]"}], "2"]}]}], 
+      ")"}]}]]}]]], "Output",
+ CellChangeTimes->{3.8690815133143935`*^9, 3.86908165642004*^9},
+ CellLabel->"Out[3]=",ExpressionUUID->"36aa2803-07ac-4f71-b4eb-98c5d9847be5"]
+}, Open  ]],
+
+Cell["Resetting epsilon =c/a, we then get:", "Text",
+ CellChangeTimes->{{3.869081527938298*^9, 
+  3.869081548142095*^9}},ExpressionUUID->"969ced60-de32-4dec-909a-\
+70aef5851f2f"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"\[Epsilon]", "=", 
+   RowBox[{"c", "/", "a"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"\[CapitalLambda]", "//", "Simplify"}]}], "Input",
+ CellChangeTimes->{{3.86908155285259*^9, 3.869081563903102*^9}, {
+  3.869081607657969*^9, 3.8690816453626137`*^9}},
+ CellLabel->"In[4]:=",ExpressionUUID->"ff58e0b2-a7bd-44da-8541-b216bbad0f99"],
+
+Cell[BoxData[
+ FractionBox[
+  RowBox[{"\[Beta]", " ", 
+   SuperscriptBox[
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"-", 
+          SuperscriptBox["a", "2"]}], "+", 
+         SuperscriptBox["c", "2"]}], ")"}], " ", 
+       SuperscriptBox[
+        RowBox[{"Cos", "[", "\[Theta]", "]"}], "2"]}], "+", 
+      SuperscriptBox["r_H", "2"]}], ")"}], "2"]}], 
+  RowBox[{"\[Alpha]", " ", 
+   SuperscriptBox["r_H", "3"], " ", 
+   SqrtBox[
+    RowBox[{
+     RowBox[{
+      SuperscriptBox["a", "2"], " ", 
+      SuperscriptBox[
+       RowBox[{"Cos", "[", "\[Theta]", "]"}], "2"]}], "+", 
+     RowBox[{
+      SuperscriptBox["c", "2"], " ", 
+      SuperscriptBox[
+       RowBox[{"Sin", "[", "\[Theta]", "]"}], "2"]}]}]]}]]], "Output",
+ CellChangeTimes->{{3.8690816339474015`*^9, 3.869081658190919*^9}},
+ CellLabel->"Out[5]=",ExpressionUUID->"a916885e-2cf2-472f-828a-b566f39c55a0"]
+}, Open  ]]
+},
+WindowSize->{453.5, 533.5},
+WindowMargins->{{7.75, Automatic}, {Automatic, 1}},
+TaggingRules-><|"TryRealOnly" -> False|>,
+FrontEndVersion->"13.0 for Microsoft Windows (64-bit) (February 4, 2022)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"500509c9-23b4-499d-bf1a-6614c394913d"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 337, 7, 81, "Text",ExpressionUUID->"bd0b5caa-c962-4dd2-9b90-9d7c1fcfe57c"],
+Cell[898, 29, 1939, 58, 114, "Input",ExpressionUUID->"37aac5f4-3db5-41b6-b896-858adf53e6ca"],
+Cell[2840, 89, 194, 3, 35, "Text",ExpressionUUID->"4d0bdc3c-7703-4f6f-af54-c623576f2070"],
+Cell[CellGroupData[{
+Cell[3059, 96, 251, 4, 28, "Input",ExpressionUUID->"929dd546-c569-4b23-a525-5451c0d6cf37"],
+Cell[3313, 102, 991, 30, 63, "Output",ExpressionUUID->"36aa2803-07ac-4f71-b4eb-98c5d9847be5"]
+}, Open  ]],
+Cell[4319, 135, 178, 3, 35, "Text",ExpressionUUID->"969ced60-de32-4dec-909a-70aef5851f2f"],
+Cell[CellGroupData[{
+Cell[4522, 142, 369, 7, 48, "Input",ExpressionUUID->"ff58e0b2-a7bd-44da-8541-b216bbad0f99"],
+Cell[4894, 151, 926, 28, 82, "Output",ExpressionUUID->"a916885e-2cf2-472f-828a-b566f39c55a0"]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)
+
