@@ -6,21 +6,21 @@ A set of files and codes for Taylor et al. (2023), which perform the analysis an
 
 ## Analytics
 A folder containing files which are utilized in the analytics.
->**ana_num_res.csv**:
+>**ana_num_res.csv**: \
 >\
->**Comparative Analytics.ipynb**:
+>**Comparative Analytics.ipynb**: \
 >\
->**Jet Rotation Comparison.ipynb**:
+>**Jet Rotation Comparison.ipynb**: \
 >\
->**Jet Torque Analytics.nb**:
+>**Jet Torque Analytics.nb**: \
 >\
->**Rotated Jet Torque Analytics.nb**:
+>**Rotated Jet Torque Analytics.nb**: \
 >\
->**Tidal Analytics.ipynb**:
+>**Tidal Analytics.ipynb**: \
 >\
->**Tidal and Jet Torque Analytics Comparisons.nb**:
+>**Tidal and Jet Torque Analytics Comparisons.nb**: \
 >\
->**Tidal Torque Analytics.nb**:
+>**Tidal Torque Analytics.nb**: \
 
 ## Figures and Paper
 A folder containing all figures used in the paper.
