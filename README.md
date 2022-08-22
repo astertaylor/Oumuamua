@@ -101,9 +101,60 @@ A folder containing all figures used in the paper.
 
 ## Lightcurves
 A folder containing files which are used to compute and model the light curves.
+>**LightcurveFitter.ipynb**: Large Jupyter Notebook which finds the optimized parameters for all models to fit the photometric data. 
+>### Astrometrics
+>Folder containing the astrometric data used in this simulations. 
+>>**process_data.py**: Python script which reads in Horizons txt files and creates csv's with the relevant data.\
+>>\
+>>**2017-???-??\_horizons\_results.txt**: JPL Horizons' txt files containing data from time periods in the file name.\
+>>\
+>>**2017-???-??\_horizons\_results.csv**: csv files containing the time, heliocentric distance, geocentric distance, and phase angle of `Oumuamua, at the time periods of the file name. 
+>>
+>### Photometry
+>Folder containing the photometric data used in these analyses. 
+>>**PhaseData.csv**: csv file containing the phase angle data over the photometric observation period, used in the simulations. \
+>>\
+>>**(1I\_2017U1\_lightcurve\_README.txt)**: README file for the photometric observational data. Not authorized to be shared, in the possession of Olivier Hainaut. \
+>>\
+>> **(1I\_2017U1\_lightcurve.csv)**: csv file containing the photometric observational data. Not authorized to be shared, in the possession of Olivier Hainaut.
 
 ## Simulations
-A folder containing files which are used in the numerical simulations of `Oumaumua.
+A folder containing files which are used in the numerical simulations of \`Oumaumua.
+>**horizons\_converter.py**: Python script which converts the Horizons txt file to a csv.
+>\
+>**horizons\_results.txt**: Horizons txt file for \`Oumuamua's trajectory.
+>\
+>**oumuamua\_traj.csv**: csv file containing \`Oumuamua's trajectory information. 
+>\
+>**Optimal Axis Fit Checker.ipynb**: Jupyter Notebook which compares the simulated light curves versus the photometric data, for the optimized-axis simulations. \
+>\
+>**Optimal Axis Simulation Analysis.ipynb**: Jupyter Notebook which analyzes the moments of inertia and the periods from the optimized-axis simulations. \
+>\
+>**Optimal Axis Simulation Lightcurve Sim.ipynb**: Jupyter Notebook which creates simulated light curves from the optimized-axis simulations. \
+>\
+>**Principal Axis Simulation Analysis.ipynb**: Jupyter Notebook which analyzes the moments of inertia and the periods from the principal-axis simulations. \
+>\
+>**Principal Axis Simulation Lightcurve Sim.ipynb**: Jupyter Notebook which creates simulated light curves from the principal-axis simulations. \
+>\
+>**runoptsims.sh**: BASH script which creates screens and runs the optimal-axis simulations simultaneously.\
+>\
+>**runprincsims.sh**: BASH script which creates screens and runs principal-axis simulations simultaneously. \
+>
+>### logs
+> A folder containing the output log files from the simulations. 
+>>**Outputs_pancake\_a??\_?.csv**: csv file containing the outputs from the simulations, computed from the optimized-axis simulations. Has the size given in a??, and a viscosity of 10<sup>?</sup>, where ? is the last number in the file name. 
+>>\
+>>**Outputs_pancake\_a??\_?.txt**: txt file containing the simulation running status, from the optimized-axis simulations. Has the size given in a??, and a viscosity of 10<sup>?</sup>, where ? is the last number in the file name. 
+>>\
+>>**Outputs_pancake?\_a??\_?.csv**: csv file containing the outputs from the simulations, computed from the principal-axis simulations. The number directly after 'pancake' is the axis arrangement class. Has the size given in a??, and a viscosity of 10<sup>?</sup>, where ? is the last number in the file name. 
+>>\
+>>**Outputs_pancake?\_a??\_?.txt**: txt file containing the simulation running status, from the principal-axis simulations. The number directly after 'pancake' is the axis arrangement class. Has the size given in a??, and a viscosity of 10<sup>?</sup>, where ? is the last number in the file name. 
+>>
+>### wrappers
+> A folder containing the scripts which run the simulations. 
+>>**optwrapper?.py**: Python scripts which run the optimal-axis simulations. 
+>>\
+>>**princwrapper?.py**: Python scripts which run the principal-axis simulations. 
 
 ---
 Aster Taylor\
