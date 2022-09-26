@@ -16,9 +16,9 @@ size = comm.Get_size()
 
 rho = 0.5  # density in g/cm^3, assumed constant
 
-size = 35  # SIZING, in METERS
+size = 35/2  # SIZING, in METERS
 
-period = 7.4008  # in hours
+period = 7.3975  # in hours
 
 n = 0  # number of mesh refinements
 
